@@ -1,0 +1,23 @@
+{
+  "overview": "SA EduSmart is a premium school management platform for S.A. Educational Institute in Manipur. It features a modern admin dashboard with student, teacher, and parent record management, attendance tracking, exam results with report cards, and an announcement system — all styled with a futuristic green, white, and gold glassmorphism design with dark/light mode.",
+  "features": [
+    "Admin dashboard with analytics charts and quick actions",
+    "Student, teacher, and parent record management (CRUD)",
+    "Attendance marking and tracking with stats",
+    "Exam results, grade calculation, and report card generation",
+    "Announcement and notification system",
+    "Green, white, and gold glassmorphism theme with dark/light mode",
+    "Fully mobile-responsive design"
+  ],
+  "category": "productivity",
+  "tags": [
+    "education",
+    "school-management",
+    "admin-dashboard",
+    "attendance",
+    "exam-results",
+    "glassmorphism",
+    "dark-mode"
+  ],
+  "last_updated": "2026-05-16T09:31:07.278Z"
+}

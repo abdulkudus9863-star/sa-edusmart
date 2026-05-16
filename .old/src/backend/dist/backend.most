@@ -1,0 +1,153 @@
+// Version: 1.0.0
+type AnnouncementId__675324675 = Id__389469852;
+type Announcement__160704614 =
+  {
+    createdAt : Timestamp__301639476;
+    createdBy : UserId__158757552;
+    id : AnnouncementId__675324675;
+    var message : Text;
+    var recipientGroup : RecipientGroup__456749908;
+    var title : Text
+  };
+type AttendanceId__1047620299 = Id__389469852;
+type AttendanceRecord__699091857 =
+  {
+    className : Text;
+    date : Text;
+    id : AttendanceId__1047620299;
+    markedAt : Timestamp__301639476;
+    status : AttendanceStatus__1021638340;
+    studentId : Id__389469852
+  };
+type AttendanceStatus__1021638340 = {#absent; #present};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type ExamId__1032019441 = Id__389469852;
+type Exam__947290883 =
+  {
+    createdAt : Timestamp__301639476;
+    var date : Text;
+    id : ExamId__1032019441;
+    var name : Text;
+    var subjects : [Text];
+    var totalMarks : Nat
+  };
+type Grade__586884269 = {#a; #aPlus; #b; #bPlus; #c; #cPlus; #d; #f};
+type Id__389469852 = Nat;
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type ParentId__691279995 = Id__389469852;
+type Parent__35124029 =
+  {
+    var contactEmail : Text;
+    var contactPhone : Text;
+    createdAt : Timestamp__301639476;
+    id : ParentId__691279995;
+    var name : Text;
+    var studentIds : [Id__389469852]
+  };
+type RecipientGroup__456749908 = {#all; #parents; #students; #teachers};
+type Role__300349085 = {#admin; #parent; #student; #teacher};
+type Session__71599859 =
+  {
+    principal : UserId__158757552;
+    registeredAt : Timestamp__301639476;
+    role : Role__300349085
+  };
+type StudentId__381756952 = Id__389469852;
+type Student__26715999 =
+  {
+    var className : Text;
+    var contactEmail : Text;
+    var contactPhone : Text;
+    createdAt : Timestamp__301639476;
+    id : StudentId__381756952;
+    var name : Text;
+    var parentId : ?Id__389469852;
+    var rollNumber : Text
+  };
+type SubjectMarkId__480279024 = Id__389469852;
+type SubjectMark__524196911 =
+  {
+    examId : ExamId__1032019441;
+    grade : Grade__586884269;
+    id : SubjectMarkId__480279024;
+    marksObtained : Nat;
+    recordedAt : Timestamp__301639476;
+    studentId : Id__389469852;
+    subject : Text;
+    totalMarks : Nat
+  };
+type TeacherId__1036338614 = Id__389469852;
+type Teacher__896081680 =
+  {
+    var contactEmail : Text;
+    var contactPhone : Text;
+    createdAt : Timestamp__301639476;
+    id : TeacherId__1036338614;
+    var name : Text;
+    var subjects : [Text]
+  };
+type Timestamp__301639476 = Int;
+type UserId__158757552 = Principal;
+actor {
+  stable announcementState : {var nextId : Nat};
+  stable announcements :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Announcement__160704614]];
+      var elementIndex : Nat__490723111
+    };
+  stable attendanceRecords :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?AttendanceRecord__699091857]];
+      var elementIndex : Nat__490723111
+    };
+  stable attendanceState : {var nextId : Nat};
+  stable examState : {var nextId : Nat};
+  stable exams :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Exam__947290883]];
+      var elementIndex : Nat__490723111
+    };
+  stable markState : {var nextId : Nat};
+  stable parentState : {var nextId : Nat};
+  stable parents :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Parent__35124029]];
+      var elementIndex : Nat__490723111
+    };
+  stable sessions :
+    {
+      var root : Node__46230540<UserId__158757552, Session__71599859>;
+      var size : Nat__490723111
+    };
+  stable studentState : {var nextId : Nat};
+  stable students :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Student__26715999]];
+      var elementIndex : Nat__490723111
+    };
+  stable subjectMarks :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?SubjectMark__524196911]];
+      var elementIndex : Nat__490723111
+    };
+  stable teacherState : {var nextId : Nat};
+  stable teachers :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Teacher__896081680]];
+      var elementIndex : Nat__490723111
+    }
+};

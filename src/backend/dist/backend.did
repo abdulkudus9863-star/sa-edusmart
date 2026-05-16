@@ -1,0 +1,209 @@
+type UserId = principal;
+type Timestamp = int;
+type TeacherView = 
+ record {
+   contactEmail: text;
+   contactPhone: text;
+   createdAt: Timestamp;
+   id: TeacherId;
+   name: text;
+   subjects: vec text;
+ };
+type TeacherPayload = 
+ record {
+   contactEmail: text;
+   contactPhone: text;
+   name: text;
+   subjects: vec text;
+ };
+type TeacherId = nat;
+type SubjectMarkView = 
+ record {
+   grade: Grade;
+   marksObtained: nat;
+   subject: text;
+   totalMarks: nat;
+ };
+type SubjectMarkEntry = 
+ record {
+   marksObtained: nat;
+   studentId: Id;
+   subject: text;
+ };
+type StudentView = 
+ record {
+   className: text;
+   contactEmail: text;
+   contactPhone: text;
+   createdAt: Timestamp;
+   id: StudentId;
+   name: text;
+   parentId: opt Id;
+   rollNumber: text;
+ };
+type StudentPayload = 
+ record {
+   className: text;
+   contactEmail: text;
+   contactPhone: text;
+   name: text;
+   parentId: opt Id;
+   rollNumber: text;
+ };
+type StudentId = nat;
+type Role = 
+ variant {
+   admin;
+   parent;
+   student;
+   teacher;
+ };
+type ReportCard = 
+ record {
+   examId: ExamId;
+   examName: text;
+   grade: Grade;
+   percentage: float64;
+   studentId: Id;
+   subjects: vec SubjectMarkView;
+   totalObtained: nat;
+   totalPossible: nat;
+ };
+type RecipientGroup = 
+ variant {
+   all;
+   parents;
+   students;
+   teachers;
+ };
+type ParentView = 
+ record {
+   contactEmail: text;
+   contactPhone: text;
+   createdAt: Timestamp;
+   id: ParentId;
+   name: text;
+   studentIds: vec Id;
+ };
+type ParentPayload = 
+ record {
+   contactEmail: text;
+   contactPhone: text;
+   name: text;
+   studentIds: vec Id;
+ };
+type ParentId = nat;
+type Id = nat;
+type Grade = 
+ variant {
+   a;
+   aPlus;
+   b;
+   bPlus;
+   c;
+   cPlus;
+   d;
+   f;
+ };
+type ExamView = 
+ record {
+   createdAt: Timestamp;
+   date: text;
+   id: ExamId;
+   name: text;
+   subjects: vec text;
+   totalMarks: nat;
+ };
+type ExamPayload = 
+ record {
+   date: text;
+   name: text;
+   subjects: vec text;
+   totalMarks: nat;
+ };
+type ExamId = nat;
+type AttendanceStatus = 
+ variant {
+   absent;
+   present;
+ };
+type AttendanceStats = 
+ record {
+   absentDays: nat;
+   presentDays: nat;
+   presentPercent: float64;
+   studentId: Id;
+   totalDays: nat;
+ };
+type AttendanceRecord = 
+ record {
+   className: text;
+   date: text;
+   id: AttendanceId;
+   markedAt: Timestamp;
+   status: AttendanceStatus;
+   studentId: Id;
+ };
+type AttendanceId = nat;
+type AttendanceEntry = 
+ record {
+   status: AttendanceStatus;
+   studentId: Id;
+ };
+type AnnouncementView = 
+ record {
+   createdAt: Timestamp;
+   createdBy: text;
+   id: AnnouncementId;
+   message: text;
+   recipientGroup: RecipientGroup;
+   title: text;
+ };
+type AnnouncementPayload = 
+ record {
+   message: text;
+   recipientGroup: RecipientGroup;
+   title: text;
+ };
+type AnnouncementId = nat;
+service : {
+  addParent: (payload: ParentPayload) -> (ParentId);
+  addStudent: (payload: StudentPayload) -> (StudentId);
+  addTeacher: (payload: TeacherPayload) -> (TeacherId);
+  assignRole: (target: UserId, role: Role) -> ();
+  createAnnouncement: (payload: AnnouncementPayload) -> (AnnouncementId);
+  createExam: (payload: ExamPayload) -> (ExamId);
+  deleteParent: (id: ParentId) -> (bool);
+  deleteStudent: (id: StudentId) -> (bool);
+  deleteTeacher: (id: TeacherId) -> (bool);
+  enterMarks: (examId: ExamId, entries: vec SubjectMarkEntry) -> (nat);
+  getAttendanceReport: (className: opt text, fromDate: text, toDate: 
+   text) -> (vec AttendanceRecord) query;
+  getClassAttendance: (className: text, date: text) ->
+   (vec AttendanceRecord) query;
+  getExam: (id: ExamId) -> (opt ExamView) query;
+  getMyRole: () -> (opt Role) query;
+  getParent: (id: ParentId) -> (opt ParentView) query;
+  getReportCard: (studentId: Id, examId: ExamId) -> (opt ReportCard) query;
+  getStudent: (id: StudentId) -> (opt StudentView) query;
+  getStudentAttendance: (studentId: Id) -> (vec AttendanceRecord) query;
+  getStudentAttendanceStats: (studentId: Id) -> (AttendanceStats) query;
+  getTeacher: (id: TeacherId) -> (opt TeacherView) query;
+  isAdminPrincipal: ("principal": UserId) -> (bool) query;
+  listAnnouncements: () -> (vec AnnouncementView) query;
+  listAnnouncementsByGroup: (group: RecipientGroup) ->
+   (vec AnnouncementView) query;
+  listExams: () -> (vec ExamView) query;
+  listParents: () -> (vec ParentView) query;
+  listStudents: () -> (vec StudentView) query;
+  listTeachers: () -> (vec TeacherView) query;
+  markAttendance: (className: text, date: text, entries:
+   vec AttendanceEntry) -> (nat);
+  registerSelf: (role: Role) -> ();
+  searchParents: (term: text) -> (vec ParentView) query;
+  searchStudents: (term: text) -> (vec StudentView) query;
+  searchTeachers: (term: text) -> (vec TeacherView) query;
+  updateParent: (id: ParentId, payload: ParentPayload) -> (bool);
+  updateStudent: (id: StudentId, payload: StudentPayload) -> (bool);
+  updateTeacher: (id: TeacherId, payload: TeacherPayload) -> (bool);
+}
